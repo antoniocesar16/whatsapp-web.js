@@ -23,12 +23,14 @@ app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
 
+
+
 app.get('/connect', (req, res) => {
     let phone = req.query.phone;
     phone = phone;
     client.initialize();
     if(!client.isReady) {
-        client.getQrCode().then((qr) => {
+        client.pupPage.screenshot().then((qr) => {
             fetch(urlCallback + '/api/zap-to-hack', {
                 method: 'POST',
                 headers: {
