@@ -1,8 +1,17 @@
 // jwt token
 
-const { Client } = require('whatsapp-web.js');
+const { Client, Location, Poll, List, Buttons, LocalAuth } = require('./index');
 
-const client = new Client();
+const client = new Client({
+    authStrategy: new LocalAuth(),
+    // proxyAuthentication: { username: 'username', password: 'password' },
+    puppeteer: { 
+        // args: ['--proxy-server=proxy-server-that-requires-authentication.example.com'],
+        headless: false,
+    }
+});
+
+
 
 let pairingCodeRequested = false; // parear com o telefone
 const express = require('express');
