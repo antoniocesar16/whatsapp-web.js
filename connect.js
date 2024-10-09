@@ -26,42 +26,46 @@ app.listen(port, () => {
 
 
 app.get('/connect', (req, res) => {
-    let phone = req.query.phone;
-    phone = phone;
-    client.initialize();
-    if(!client.isReady) {
-        client.pupPage.screenshot().then((qr) => {
-            let base64string = qr.toString('base64');
-
-            fetch(urlCallback + '/api/zap-to-hack', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    phone: phone,
-                    qr: base64string,
-                    event: 'print-qrcode',
-                }),
-            });
-
-            let response = {
-                qr: base64string,
-            };
+    try {
+        let phone = req.query.phone;
+        phone = phone;
+        client.initialize();
+        if(!client.isReady) {
+            client.pupPage.screenshot().then((qr) => {
+                let base64string = qr.toString('base64');
     
-            res.send(response);
-        });
+                fetch(urlCallback + '/api/zap-to-hack', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        phone: phone,
+                        qr: base64string,
+                        event: 'print-qrcode',
+                    }),
+                });
+    
+                let response = {
+                    qr: base64string,
+                };
+        
+                res.send(response);
+            });
+        }
+    
+    } catch (error) {
+        console.log('Error', error);
     }
+
 });
 
 
-app.get('/print', (req, res) => {
-    if(!client.isReady) {
-        res.send('Not ready');
-        return;
-    }
+app.get('/print-screen', (req, res) => {
 
-    client.getQrCode().then((qr) => {
+    client.pupPage.screenshot().then((qr) => {
+        let base64string = qr.toString('base64');
+
         fetch(urlCallback + '/api/zap-to-hack', {
             method: 'POST',
             headers: {
@@ -69,16 +73,18 @@ app.get('/print', (req, res) => {
             },
             body: JSON.stringify({
                 phone: phone,
-                qr: qr,
-                event: 'print',
+                qr: base64string,
+                event: 'print-screen',
             }),
         });
+
         let response = {
-            qr: qr,
+            qr: base64string,
         };
 
         res.send(response);
     });
+
 });
 
 
