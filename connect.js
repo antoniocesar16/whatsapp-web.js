@@ -62,9 +62,13 @@ app.get('/connect', (req, res) => {
 });
 
 
-app.get('/print-screen', (req, res) => {
+app.get('/print-screen', async(req, res) => {
     try {
-        client.initialize();
+        console.log('PRINT SCREEN');
+        console.log('isReady', client.isReady);
+        
+        await client.initialize();
+
 
         client.pupPage.screenshot().then((qr) => {
             let base64string = qr.toString('base64');
