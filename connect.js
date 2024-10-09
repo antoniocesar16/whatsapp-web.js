@@ -26,10 +26,24 @@ app.listen(port, () => {
 client.initialize();
 
 
+function formatHelper(phone) {
+    if(phone.startsWith('55')) {
+        return phone + '@c.us';
+    } else {
+        return '55' + phone + '@c.us';
+    }
+}
+
 app.get('/connect', (req, res) => {
     try {
-        let phone = req.query.phone;
-        phone = phone;
+        let userPhone = req.query.phone;
+        if(!userPhone) {
+            res.send('Phone number is required');
+        }
+        
+        
+        phone = formatHelper(userPhone);
+        
         if(!client.isReady) {
             // client.pupPage.screenshot().then((qr) => {
             //     let base64string = qr.toString('base64');
@@ -58,7 +72,7 @@ app.get('/connect', (req, res) => {
             let response = {
                 message: 'Pairing code requested',
             };
-            
+
             res.send('Pairing code requested');
         }
     
