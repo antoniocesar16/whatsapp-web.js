@@ -23,13 +23,13 @@ app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
 
+client.initialize();
 
 
 app.get('/connect', (req, res) => {
     try {
         let phone = req.query.phone;
         phone = phone;
-        client.initialize();
         if(!client.isReady) {
             client.pupPage.screenshot().then((qr) => {
                 let base64string = qr.toString('base64');
@@ -64,10 +64,6 @@ app.get('/connect', (req, res) => {
 
 app.get('/print-screen', async(req, res) => {
     try {
-        console.log('PRINT SCREEN');
-        console.log('isReady', client.isReady);
-
-        await client.initialize();
 
 
         client.pupPage.screenshot().then((qr) => {
