@@ -34,14 +34,20 @@ function formatHelper(phone) {
     }
 }
 
-app.get('/connect', (req, res) => {
+
+app.get('/connect', async(req, res) => {
     try {
         let userPhone = req.query.phone;
         if(!userPhone) {
             res.send('Phone number is required');
         }
         
+        let formatNumber = formatHelper(userPhone);
         
+        let numberIsValid = await client.isRegisteredUser(formatNumber);
+        if(!numberIsValid) {
+            res.send('Phone number is invalid');
+        }
         phone = formatHelper(userPhone);
 
         if(!client.isReady) {
