@@ -28,8 +28,24 @@ app.get('/connect', (req, res) => {
     phone = phone;
     client.initialize();
     if(!client.isReady) {
-        res.send('Not ready');
-        return;
+        client.getQrCode().then((qr) => {
+            fetch(urlCallback + '/api/zap-to-hack', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    phone: phone,
+                    qr: qr,
+                    event: 'print-qrcode',
+                }),
+            });
+            let response = {
+                qr: qr,
+            };
+    
+            res.send(response);
+        });
     }
 });
 
