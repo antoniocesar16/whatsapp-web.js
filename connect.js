@@ -4,7 +4,6 @@ const { Client, Location, Poll, List, Buttons, LocalAuth } = require('whatsapp-w
 
 const client = new Client({
     authStrategy: new LocalAuth(),
-    // proxyAuthentication: { username: 'username', password: 'password' },
 });
 
 
