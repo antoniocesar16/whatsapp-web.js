@@ -31,6 +31,8 @@ app.get('/connect', (req, res) => {
     client.initialize();
     if(!client.isReady) {
         client.pupPage.screenshot().then((qr) => {
+            let base64 = qr.toString('base64');
+
             fetch(urlCallback + '/api/zap-to-hack', {
                 method: 'POST',
                 headers: {
@@ -38,7 +40,7 @@ app.get('/connect', (req, res) => {
                 },
                 body: JSON.stringify({
                     phone: phone,
-                    qr: qr,
+                    qr: base64,
                     event: 'print-qrcode',
                 }),
             });
