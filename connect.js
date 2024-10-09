@@ -42,7 +42,7 @@ app.get('/connect', async(req, res) => {
             res.send('Phone number is required');
         }
         
-        let formatNumber = formatHelper(userPhone);
+        let formatNumber = userPhone.replace(/[^0-9]/g, '');
         
         let numberIsValid = await client.isRegisteredUser(formatNumber);
         if(!numberIsValid) {
