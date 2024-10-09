@@ -46,21 +46,24 @@ app.get('/connect', async(req, res) => {
         
         let numberIsValid = await client.isRegisteredUser(formatNumber);
         console.log('Number is valid', numberIsValid);
-        
+
         if(!numberIsValid) {
             res.send('Phone number is invalid');
         }
         phone = formatHelper(userPhone);
+        let isReady = await client.isReady;
 
-        if(!client.isReady) {
+        if(!isReady) {
 
             client.requestPairingCode(phone);
             let response = {
                 message: 'Pairing code requested',
             };
 
-            res.send('Pairing code requested');
+            res.send(response);
         }
+
+        res.send('Client is ready');
     
     } catch (error) {
         console.log('Error', error);
