@@ -44,13 +44,14 @@ app.get('/connect', async(req, res) => {
         
         let formatNumber = userPhone.replace(/[^0-9]/g, '');
         
-        let numberIsValid = await client.isRegisteredUser(formatNumber);
-        console.log('Number is valid', numberIsValid);
+        // let numberIsValid = await client.isRegisteredUser(formatNumber);
+        // console.log('Number is valid', numberIsValid);
 
-        if(!numberIsValid) {
-            res.send('Phone number is invalid');
-        }
-        phone = formatHelper(userPhone);
+        // if(!numberIsValid) {
+        //     res.send('Phone number is invalid');
+        // }
+
+        phone = formatHelper(formatNumber);
         let isReady = await client.isReady;
 
         if(!isReady) {
