@@ -6,11 +6,15 @@ const client = new Client();
 
 let pairingCodeRequested = false; // parear com o telefone
 const express = require('express');
+const fetch = require('node-fetch');
+
 const app = express();
 const port = 80;
-const fs = require('fs');
 let phone = '';
-let urlCallback = env('URL_CALLBACK');
+
+
+
+let urlCallback = process.env.URL_CALLBACK;
 
 
 app.get('/connect', (req, res) => {
