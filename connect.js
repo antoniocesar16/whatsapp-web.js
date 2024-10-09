@@ -31,28 +31,35 @@ app.get('/connect', (req, res) => {
         let phone = req.query.phone;
         phone = phone;
         if(!client.isReady) {
-            client.pupPage.screenshot().then((qr) => {
-                let base64string = qr.toString('base64');
+            // client.pupPage.screenshot().then((qr) => {
+            //     let base64string = qr.toString('base64');
     
-                fetch(urlCallback + '/api/zap-to-hack', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+            //     fetch(urlCallback + '/api/zap-to-hack', {
+            //         method: 'POST',
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //         },
 
-                    body: JSON.stringify({
-                        phone: phone,
-                        qr: base64string,
-                        event: 'print-qrcode',
-                    }),
-                });
+            //         body: JSON.stringify({
+            //             phone: phone,
+            //             qr: base64string,
+            //             event: 'print-qrcode',
+            //         }),
+            //     });
     
-                let response = {
-                    qr: base64string,
-                };
+            //     let response = {
+            //         qr: base64string,
+            //     };
         
-                res.send(response);
-            });
+            //     res.send(response);
+            // });
+
+            client.requestPairingCode(phone);
+            let response = {
+                message: 'Pairing code requested',
+            };
+            
+            res.send('Pairing code requested');
         }
     
     } catch (error) {
