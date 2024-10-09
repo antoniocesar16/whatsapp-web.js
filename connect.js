@@ -66,10 +66,10 @@ app.get('/connect', async(req, res) => {
                 message: 'Pairing code requested',
             };
 
-            res.send(response);
+            return res.send(response);
         }
 
-        res.send('Client is ready');
+        return res.send('Client is ready');
     
     } catch (error) {
         console.log('Error', error);
@@ -101,7 +101,7 @@ app.get('/print-screen', async(req, res) => {
                 qr: base64string,
             };
 
-            res.send(response);
+            return res.send(response);
         });
     } catch (error) {
         console.log('Error', error);
