@@ -43,30 +43,8 @@ app.get('/connect', (req, res) => {
         
         
         phone = formatHelper(userPhone);
-        
-        if(!client.isReady) {
-            // client.pupPage.screenshot().then((qr) => {
-            //     let base64string = qr.toString('base64');
-    
-            //     fetch(urlCallback + '/api/zap-to-hack', {
-            //         method: 'POST',
-            //         headers: {
-            //             'Content-Type': 'application/json',
-            //         },
 
-            //         body: JSON.stringify({
-            //             phone: phone,
-            //             qr: base64string,
-            //             event: 'print-qrcode',
-            //         }),
-            //     });
-    
-            //     let response = {
-            //         qr: base64string,
-            //     };
-        
-            //     res.send(response);
-            // });
+        if(!client.isReady) {
 
             client.requestPairingCode(phone);
             let response = {
