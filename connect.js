@@ -9,13 +9,19 @@ const express = require('express');
 const fetch = require('node-fetch');
 
 const app = express();
-const port = 80;
+const env = require('dotenv').config();
+
+
+const port = process.env.EXPRESS_PORT || 80;
 let phone = '';
 
-
+console.log('URL_CALLBACK', process.env.EXPRESS_PORT);
 
 let urlCallback = process.env.URL_CALLBACK;
 
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+});
 
 app.get('/connect', (req, res) => {
     let phone = req.query.phone;
