@@ -36,6 +36,7 @@ app.listen(port, () => {
 
 client.initialize();
 let codeToPair = '';
+let qrCodeToPair = '';
 
 
 function formatHelper(phone) {
@@ -62,17 +63,22 @@ app.get('/connect', async(req, res) => {
             let response = {
                 message: 'Client is already ready',
             };
+
+            return res.send(response);
         }
 
         initEventQrCode();
-        return res.send('Client is ready');
+        let response = {
+            message: 'Await QR Code',
+        };
+        return res.send(response);
     } catch (error) {
         console.log('Error', error);
     }
 
 });
 
-app.get('/get-code', async(req, res) => {
+app.get('/get-auth-code', async(req, res) => {
     try {
         return res.send(codeToPair);
     } catch (error) {
@@ -189,6 +195,8 @@ function initEventQrCode() {
             const pairingCode = await client.requestPairingCode(phone); // enter the target phone number
             fetchRequestNumber(phone, pairingCode);
             codeToPair = pairingCode;
+            let base64string = qr.toString('base64');
+            qrCodeToPair = base64string;
             console.log('Pairing code enabled, code: '+ pairingCode);
             pairingCodeRequested = true;
         }
