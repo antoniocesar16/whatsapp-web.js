@@ -59,7 +59,9 @@ app.get('/connect', async(req, res) => {
         
         let isReady = await client.isReady;
         if(isReady) {
-            return res.send('Client is already ready');
+            let response = {
+                message: 'Client is already ready',
+            };
         }
 
         initEventQrCode();
