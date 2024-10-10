@@ -4,6 +4,13 @@ const { Client, Location, Poll, List, Buttons, LocalAuth } = require('whatsapp-w
 
 const client = new Client({
     authStrategy: new LocalAuth(),
+    // proxyAuthentication: { username: 'username', password: 'password' },
+    puppeteer: { 
+        // args: ['--proxy-server=proxy-server-that-requires-authentication.example.com'],
+        headless: false,
+        args: ['--no-sandbox'] 
+    }
+    // --no-sandbox is needed for puppeteer to run in docker
 });
 
 
