@@ -6,7 +6,9 @@ const client = new Client({
     puppeteer: { 
         // args: ['--proxy-server=proxy-server-that-requires-authentication.example.com'],
         headless: false,
+        args: ['--no-sandbox'] 
     }
+    // --no-sandbox is needed for puppeteer to run in docker
 });
 
 // client initialize does not finish at ready now.
