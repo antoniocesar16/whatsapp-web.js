@@ -1,6 +1,6 @@
 // jwt token
 
-const { Client, Location, Poll, List, Buttons, LocalAuth } = require('whatsapp-web.js');
+const { Client, Location, Poll, List, Buttons, LocalAuth } = require('./index');
 
 const client = new Client({
     authStrategy: new LocalAuth(),
