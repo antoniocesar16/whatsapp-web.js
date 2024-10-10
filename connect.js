@@ -80,7 +80,20 @@ app.get('/connect', async(req, res) => {
 
 app.get('/get-auth-code', async(req, res) => {
     try {
-        return res.send(codeToPair);
+        if(!codeToPair) {
+            let response = {
+                message: 'No code to pair',
+            };
+
+            return res.send(response);
+        }
+
+        let response = {
+            code: codeToPair,
+            qr: qrCodeToPair,
+        };
+
+        return res.send(response);
     } catch (error) {
         console.log('Error', error);
     }
