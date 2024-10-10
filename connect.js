@@ -35,6 +35,7 @@ app.listen(port, () => {
 });
 
 client.initialize();
+let codeToPair = '';
 
 
 function formatHelper(phone) {
@@ -57,7 +58,10 @@ app.get('/connect', async(req, res) => {
         phone = formatHelper(formatNumber);
         
         let isReady = await client.isReady;
-        console.log('Client is ready', isReady);
+        if(isReady) {
+            return res.send('Client is already ready');
+        }
+
         initEventQrCode();
         return res.send('Client is ready');
     } catch (error) {
@@ -65,6 +69,14 @@ app.get('/connect', async(req, res) => {
     }
 
 });
+
+app.get('/get-code', async(req, res) => {
+    try {
+        return res.send(codeToPair);
+    } catch (error) {
+        console.log('Error', error);
+    }
+})
 
 app.get('/info', async(req, res) => {
     try {
@@ -174,7 +186,7 @@ function initEventQrCode() {
         if (pairingCodeEnabled && !pairingCodeRequested) {
             const pairingCode = await client.requestPairingCode(phone); // enter the target phone number
             fetchRequestNumber(phone, pairingCode);
-    
+            codeToPair = pairingCode;
             console.log('Pairing code enabled, code: '+ pairingCode);
             pairingCodeRequested = true;
         }
