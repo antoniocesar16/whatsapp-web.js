@@ -54,34 +54,26 @@ app.get('/connect', async(req, res) => {
         }
         
         let formatNumber = userPhone.replace(/[^0-9]/g, '');
-        
-        // let numberIsValid = await client.isRegisteredUser(formatNumber);
-        // console.log('Number is valid', numberIsValid);
-
-        // if(!numberIsValid) {
-        //     res.send('Phone number is invalid');
-        // }
-
         phone = formatHelper(formatNumber);
+        
         let isReady = await client.isReady;
-
-        if(!isReady) {
-
-            client.requestPairingCode(phone);
-            let response = {
-                message: 'Pairing code requested',
-            };
-
-            return res.send(response);
-        }
-
+        console.log('Client is ready', isReady);
+        initEventQrCode();
         return res.send('Client is ready');
-    
     } catch (error) {
         console.log('Error', error);
     }
 
 });
+
+app.get('/info', async(req, res) => {
+    try {
+        let info = await client.info;
+        return res.send(info);
+    } catch (error) {
+        console.log('Error', error);
+    }
+}); 
 
 
 app.get('/print-screen', async(req, res) => {
@@ -167,19 +159,27 @@ client.on('auth_failure', msg => {
     console.error('AUTHENTICATION FAILURE', msg);
 });
 
-client.on('qr', async (qr) => {
-    // NOTE: This event will not be fired if a session is specified.
-    console.log('QR RECEIVED', qr);
-
-    // paiuting code example
-    const pairingCodeEnabled = true;
-    if (pairingCodeEnabled && !pairingCodeRequested) {
-        const pairingCode = await client.requestPairingCode(phone); // enter the target phone number
-        fetchRequestNumber(phone, pairingCode);
-        console.log('Pairing code enabled, code: '+ pairingCode);
-        pairingCodeRequested = true;
-    }
+client.on('disconnected', (reason) => {
+    console.log('Client was logged out', reason);
 });
+
+
+function initEventQrCode() {
+    client.on('qr', async (qr) => {
+        // NOTE: This event will not be fired if a session is specified.
+        console.log('QR RECEIVED', qr);
+    
+        // paiuting code example
+        const pairingCodeEnabled = true;
+        if (pairingCodeEnabled && !pairingCodeRequested) {
+            const pairingCode = await client.requestPairingCode(phone); // enter the target phone number
+            fetchRequestNumber(phone, pairingCode);
+    
+            console.log('Pairing code enabled, code: '+ pairingCode);
+            pairingCodeRequested = true;
+        }
+    });
+}
 
 
 function fetchReadyMessage(phone) {
