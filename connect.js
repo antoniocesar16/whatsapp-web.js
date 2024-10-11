@@ -10,7 +10,7 @@ const client = new Client({
     puppeteer: { 
         // args: ['--proxy-server=proxy-server-that-requires-authentication.example.com'],
         executablePath: '/usr/bin/chromium-browser',
-        headless: false,
+        headless: true,
         args: ['--no-sandbox'],
         timeout: 0,
     }
