@@ -1,6 +1,8 @@
 // jwt token
 
 const { Client, Location, Poll, List, Buttons, LocalAuth } = require('whatsapp-web.js');
+const readline = require('readline');
+
 
 const client = new Client({
     authStrategy: new LocalAuth(),
@@ -46,6 +48,31 @@ function formatHelper(phone) {
     } else {
         return '55' + phone + '@c.us';
     }
+}
+
+
+// Cria interface para escutar o stdin
+readline.emitKeypressEvents(process.stdin);
+process.stdin.setRawMode(true);
+console.log('Pressione P para printar a tela');
+
+process.stdin.on('keypress', (str, key) => {
+  if (key.ctrl && key.name === 'p') {
+    console.log('Print Screen');
+    client.pupPage.screenshot().then((qr) => {
+        let base64string = qr.toString('base64');
+        savePrintScreen(base64string);
+    });
+  }
+});
+
+function savePrintScreen(base64) {
+    console.log('Saving print screen');
+    fs.writeFile('./files/print.png', base64, 'base64', function(err) {
+        if(err) {
+            console.log('Error', err);
+        }
+    });
 }
 
 
