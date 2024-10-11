@@ -78,3 +78,5 @@ typings/
 # IDE's
 .idea
 .vscode
+
+files/*
