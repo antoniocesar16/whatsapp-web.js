@@ -9,12 +9,11 @@ const client = new Client({
     // proxyAuthentication: { username: 'username', password: 'password' },
     puppeteer: { 
         // args: ['--proxy-server=proxy-server-that-requires-authentication.example.com'],
-        headless: true,
+        headless: false,
         args: ['--no-sandbox'] 
     }
     // --no-sandbox is needed for puppeteer to run in docker
 });
-
 
 
 let pairingCodeRequested = false; // parear com o telefone
