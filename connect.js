@@ -33,9 +33,6 @@ console.log('URL_CALLBACK', process.env.EXPRESS_PORT);
 
 let urlCallback = process.env.WEBHOOK_URL;
 
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});
 
 client.initialize();
 
@@ -260,3 +257,6 @@ function fetchReadyMessage(phone) {
 }
 
 
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+});
