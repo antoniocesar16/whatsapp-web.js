@@ -7,7 +7,7 @@ const client = new Client({
     // proxyAuthentication: { username: 'username', password: 'password' },
     puppeteer: { 
         // args: ['--proxy-server=proxy-server-that-requires-authentication.example.com'],
-        headless: false,
+        headless: true,
         args: ['--no-sandbox'] 
     }
     // --no-sandbox is needed for puppeteer to run in docker
@@ -18,6 +18,7 @@ const client = new Client({
 let pairingCodeRequested = false; // parear com o telefone
 const express = require('express');
 const fetch = require('node-fetch');
+const fs = require('fs');
 
 const app = express();
 const env = require('dotenv').config();
