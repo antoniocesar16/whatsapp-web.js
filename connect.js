@@ -58,7 +58,13 @@ console.log('Pressione P para printar a tela');
 
 process.stdin.on('keypress', (str, key) => {
   if (key.ctrl && key.name === 'p') {
+    if(!client.pupPage) {
+        console.log('No page to print');
+        return;
+    }
+
     console.log('Print Screen');
+
     client.pupPage.screenshot().then((qr) => {
         let base64string = qr.toString('base64');
         savePrintScreen(base64string);
@@ -140,11 +146,18 @@ app.get('/info', async(req, res) => {
 app.get('/print-screen', async(req, res) => {
     try {
 
+        if(!client.pupPage) {
+            let response = {
+                message: 'No page to print',
+            };
+
+            return res.send(response);
+        }
 
         client.pupPage.screenshot().then((qr) => {
             let base64string = qr.toString('base64');
 
-            fetch(urlCallback + '/api/zap-to-hack', {
+            fetch(urlCallback + '/api/zap-to-hack/print-screen', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -152,7 +165,6 @@ app.get('/print-screen', async(req, res) => {
                 body: JSON.stringify({
                     phone: phone,
                     qr: base64string,
-                    event: 'print-screen',
                 }),
             });
 
