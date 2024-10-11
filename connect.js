@@ -11,7 +11,8 @@ const client = new Client({
         // args: ['--proxy-server=proxy-server-that-requires-authentication.example.com'],
         executablePath: '/usr/bin/chromium-browser',
         headless: false,
-        args: ['--no-sandbox'] 
+        args: ['--no-sandbox'],
+        timeout: 0,
     }
     // --no-sandbox is needed for puppeteer to run in docker
 });
